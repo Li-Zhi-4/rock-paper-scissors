@@ -22,7 +22,14 @@
  *                  else, return "You lose! Paper beats Rock."
  *              scissors, if player chose rock, return "You win! Rock beats Scissors."
  *                  else, return "You lose! Scissors beats Paper."
- *      
+ * 
+ * Create a game function.
+ *      Function takes no parameters
+ *      Call playRound() five times.
+ *          Declare what move the player chose.
+ *          Declare what move the comuter chose.
+ *          Declare the winner of the round.
+ *          Print score.
  */
 
 /**
@@ -32,7 +39,7 @@
  */
 function getComputerChoice() {
     let computerChoice = Math.floor( Math.random() * 3 );     // Generates random number between 0 and 2
-    switch (computerChoice) {
+    switch (computerChoice) {                                 // Returns randomly generated computer choice
         case 0:
             return "rock"
         case 1:
@@ -50,36 +57,64 @@ function getComputerChoice() {
  * @returns {string} Results of a round of Rock Paper Scissors.
  */
 function playRound(playerSelection, computerSelection) {
-    playerChoice = playerSelection.toLowerCase();
+    playerChoice = playerSelection.toLowerCase();           // Converts player's choice to lowercase
 
-    if (playerChoice == computerSelection) {
-        return "A tie!"
+    if (playerChoice == computerSelection) {                // Check for tie
+        return [0, "A tie!"]
     }
 
-    switch (computerSelection) {
-        case "rock":
+    switch (computerSelection) {                            // Check depends on computer choice
+    case "rock":
             if (playerChoice == "paper") {
-                return "You win! Paper beats Rock."
+                return [1, "You win! Paper beats Rock."]
             } else {
-                return "You lose! Rock beats Scissors."
+                return [-1, "You lose! Rock beats Scissors."]
             }
         case "paper":
             if (playerChoice == "scissors") {
-                return "You win! Scissors beats Paper."
+                return [1, "You win! Scissors beats Paper."]
             } else {
-                return "You lose! Paper beats Rock."
+                return [-1, "You lose! Paper beats Rock."]
             }
         case "scissors":
             if (playerChoice == "rock") {
-                return "You win! Rock beats Scissors."
+                return [1, "You win! Rock beats Scissors."]
             } else {
-                return "You lose! Scissors beats Paper."
+                return [-1, "You lose! Scissors beats Paper."]
             }
     }
 }
 
-const playerSelection = "rock";
-const computerSelection = getComputerChoice();
-console.log("Player selected ", playerSelection);
-console.log("Computer selected ", computerSelection);
-console.log(playRound(playerSelection, computerSelection));
+/**
+ * Returns the results of five games of rock paper scissors.
+ * 
+ * @returns {string} Results of five games of rock paper scissors.
+ */
+function game() {
+    let playerScore = 0;        // Set initial player score
+    let computerScore = 0;      // Set initial computer score
+
+    for (i = 0; i < 5; i++) {
+        const playerSelection = String(window.prompt("Enter rock paper scissors choice:"));     // Prompt user for choice
+        const computerSelection = getComputerChoice();                                          // Acquire computer choice
+
+        const [gamePoints, gameMessage] = playRound(playerSelection, computerSelection);
+        console.log(gameMessage);   // Print round specific results
+
+        if (gamePoints == 1) {      // Tally score for round
+            playerScore += 1;
+        } else if (gamePoints == -1) {
+            computerScore += 1;
+        }
+    }
+
+    if (playerScore > computerScore) {          // Print game results
+        return "Player wins best out of five rounds!"
+    } else if (playerScore < computerScore) {
+        return "Computer wins best out of five rounds!"
+    } else {
+        return "Player and Computer tie!"
+    }
+}
+
+console.log(game());
